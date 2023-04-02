@@ -7,6 +7,7 @@ use Exception;
 use DOMDocument;
 use Masterminds\HTML5;
 use SyntaxPhoenix\EJSParserBundle\Exception\NoBlockException;
+use SyntaxPhoenix\EJSParserBundle\Parser\Extension\CarouselParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\RawParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\CodeParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\LinkParser;
@@ -16,7 +17,6 @@ use SyntaxPhoenix\EJSParserBundle\Parser\Extension\EmbedParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\ImageParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\TableParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\HeaderParser;
-use SyntaxPhoenix\EJSParserBundle\Parser\EditorjsParserExtension;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\WarningParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\DelimiterParser;
 use SyntaxPhoenix\EJSParserBundle\Parser\Extension\ParagraphParser;
@@ -56,6 +56,11 @@ class EditorjsParser
         ];
     }
 
+    public function addParser($name, $instance)
+    {
+        $this->parser[$name] = $instance;
+    }
+
     public function setData(object $data): void
     {
         $this->data = $data;
@@ -72,7 +77,7 @@ class EditorjsParser
     {
         try {
             $this->render();
-    
+
             return $this->dom->saveHTML();
         } catch (NoBlockException $exception) {
             return '';
